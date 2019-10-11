@@ -12,7 +12,7 @@ class Token extends Model {
     return this.init(
       {
         tokenId: {
-          type: STRING(500),
+          type: STRING('max'),
           autoIncrement: true,
           primaryKey: true,
           allowNull: false

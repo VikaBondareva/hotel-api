@@ -1,10 +1,12 @@
+import { StatusUsers } from '../enums';
+
 export default [
   {
     name: 'Admin',
     surname: 'Admin',
-    patronymic: 'Admin',
-    phoneNumber: '+375297799188',
     email: 'admin@mail.ru',
-    password: 'admin'
+    password: 'admin',
+    phoneNumber: '+375297799188',
+    status: StatusUsers.Active
   }
 ];

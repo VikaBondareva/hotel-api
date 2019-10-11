@@ -11,25 +11,11 @@ export class Client extends Model {
   public status!: number;
   public attemptLogin!: number;
   public loginCode!: number | null;
-  public created_at!: Date;
-  public updated_at!: Date;
-
-  public getFullName = () => {
-    return `${this.name} ${this.surname}`;
-  };
-
-  static countDocuments = async () => {
-    return await Client.count();
-  };
-
-  static remove = async (options: any, callback: () => {}) => {
-    return await Client.destroy(options).then(() => {
-      callback();
-    });
-  };
+  public readonly created_at!: Date;
+  public readonly updated_at!: Date;
 
   static initTable(sequelize: any, DataTypes: any) {
-    return Client.init(
+    Client.init(
       {
         clientId: {
           type: DataTypes.INTEGER,

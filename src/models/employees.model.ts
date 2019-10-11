@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Model } from 'sequelize';
+import { Model, Sequelize } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { Validate, StatusUsersArray } from '../enums';
 
@@ -10,35 +10,11 @@ class Employee extends Model {
   public password!: string;
   public email!: string;
   public phoneNumber!: string;
-  public status!: number;
-  public identifiedToken!: number | null;
-  public created_at!: Date;
-  public updated_at!: Date;
+  public status!: string;
+  public created_at!: string;
+  public updated_at!: string;
 
-  public getFullName = () => {
-    return `${this.name} ${this.surname}`;
-  };
-
-  public comparePassword = (candidatePassword: string) => {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(candidatePassword, this.password, (err, success) => {
-        if (err) return reject(err);
-        return resolve(success);
-      });
-    });
-  };
-
-  static countDocuments = async () => {
-    return await Employee.count();
-  };
-
-  static remove = async (options: any, callback: () => {}) => {
-    return await Employee.destroy(options).then(() => {
-      callback();
-    });
-  };
-
-  static initTable(sequelize: any, DataTypes: any) {
+  public static initTable(sequelize: Sequelize, DataTypes: any) {
     Employee.init(
       {
         employeeId: {
@@ -79,11 +55,6 @@ class Employee extends Model {
           validate: {
             isIn: [StatusUsersArray]
           }
-        },
-        identifiedToken: {
-          type: DataTypes.STRING(99999),
-          allowNull: true,
-          defaultValue: null
         }
       },
       {

@@ -4,9 +4,7 @@ import { Model } from 'sequelize';
 class TokenIdentified extends Model {
   public tokenId!: string;
   public token!: string;
-  public userId!: string;
-  public role!: string;
-  public isValid!: boolean;
+  public employeeId!: string;
 
   static initTable(sequelize: any, DataTypes: any) {
     return this.init(
@@ -18,10 +16,10 @@ class TokenIdentified extends Model {
           allowNull: false
         },
         token: {
-          type: DataTypes.STRING(99999),
+          type: DataTypes.STRING('max'),
           allowNull: false
         },
-        userId: {
+        employeeId: {
           type: DataTypes.INTEGER,
           allowNull: false
         }

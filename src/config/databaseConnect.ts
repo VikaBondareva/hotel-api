@@ -21,7 +21,14 @@ export function initializeDb(callback: (sequelize: Sequelize) => void): void {
       Employee.initTable(sequelize, Sequelize);
       Client.initTable(sequelize, Sequelize);
 
-      seedingMongo();
+      sequelize
+        .sync()
+        .then(() => {
+          seedingMongo();
+        })
+        .catch((err: any): void => {
+          throw new Error(err);
+        });
     })
     .then(() => {
       callback(sequelize);
