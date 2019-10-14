@@ -81,6 +81,7 @@ export class Rooms extends Model {
           }
         ],
         sequelize,
+        timestamps: false,
         tableName: 'Rooms'
       }
     );

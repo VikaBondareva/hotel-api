@@ -31,6 +31,7 @@ export class Additions extends Model {
           }
         ],
         sequelize,
+        timestamps: false,
         tableName: 'Additions'
       }
     );

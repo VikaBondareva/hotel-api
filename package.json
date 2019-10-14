@@ -37,6 +37,7 @@
     "passport-jwt": "^4.0.0",
     "sequelize": "^5.19.5",
     "tedious": "^6.4.0",
+    "typescript": "^3.6.4",
     "uuid": "^3.3.3",
     "winston": "^3.2.1"
   },
@@ -61,8 +62,7 @@
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",
     "morgan": "^1.9.1",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.6.4"
+    "ts-node": "^8.4.1"
   },
   "gitHooks": {
     "pre-push": "lint-staged"

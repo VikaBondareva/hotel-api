@@ -2,7 +2,17 @@ import { Sequelize } from 'sequelize';
 import { config } from './environment';
 import seedingMongo from './seeds';
 import logger from './winston';
-import { Employee, Client, Additions, Countries, Token, IdentifiedToken, Rooms } from '../models';
+import {
+  Employee,
+  Client,
+  Additions,
+  Countries,
+  Token,
+  IdentifiedToken,
+  Rooms,
+  Positions,
+  AdditionsRooms
+} from '../models';
 const { database } = config;
 
 export const sequelize = new Sequelize(database.name, database.login, database.password, {
@@ -10,6 +20,14 @@ export const sequelize = new Sequelize(database.name, database.login, database.p
   host: database.host,
   port: database.port
 });
+
+const setRelationships = async () => {
+  Positions.hasMany(Employee, { as: 'employees', foreignKey: 'positionId' });
+  Employee.hasOne(IdentifiedToken, { foreignKey: 'employeeId' });
+  Rooms.belongsToMany(Additions, { through: AdditionsRooms, foreignKey: 'roomId', onDelete: 'CASCADE' });
+  Additions.belongsToMany(Rooms, { through: AdditionsRooms, foreignKey: 'additionId' });
+  Countries.hasMany(Client, { foreignKey: 'phoneCountryId' });
+};
 
 export function initializeDb(callback: (sequelize: Sequelize) => void): void {
   sequelize
@@ -25,6 +43,10 @@ export function initializeDb(callback: (sequelize: Sequelize) => void): void {
       Rooms.initTable(sequelize, Sequelize);
       IdentifiedToken.initTable(sequelize, Sequelize);
       Token.initTable(sequelize, Sequelize);
+      Positions.initTable(sequelize, Sequelize);
+      AdditionsRooms.initTable(sequelize, Sequelize);
+
+      setRelationships();
 
       sequelize
         .sync()

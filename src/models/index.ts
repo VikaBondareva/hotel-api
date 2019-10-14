@@ -7,4 +7,6 @@ export { default as Token } from './token.model';
 export { default as Countries } from './countries.model';
 export { default as Additions } from './additions.model';
 export { default as Rooms } from './rooms.model';
-// export * from './roomServices.model';
+export { default as Positions } from './positions.model';
+export { default as AdditionsRooms } from './additions-rooms.model';
+// export * from './roomServic es.model';

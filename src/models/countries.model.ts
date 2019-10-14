@@ -31,6 +31,7 @@ export class Countries extends Model {
           }
         ],
         sequelize,
+        timestamps: false,
         tableName: 'Countries'
       }
     );
