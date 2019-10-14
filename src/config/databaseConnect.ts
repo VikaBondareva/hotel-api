@@ -11,7 +11,8 @@ import {
   IdentifiedToken,
   Rooms,
   Positions,
-  AdditionsRooms
+  AdditionsRooms,
+  Bookings
 } from '../models';
 const { database } = config;
 
@@ -27,6 +28,9 @@ const setRelationships = async () => {
   Rooms.belongsToMany(Additions, { through: AdditionsRooms, foreignKey: 'roomId', onDelete: 'CASCADE' });
   Additions.belongsToMany(Rooms, { through: AdditionsRooms, foreignKey: 'additionId' });
   Countries.hasMany(Client, { foreignKey: 'phoneCountryId' });
+
+  Client.hasMany(Bookings, { foreignKey: 'clientId' });
+  Rooms.hasMany(Bookings, { foreignKey: 'roomId' });
 };
 
 export function initializeDb(callback: (sequelize: Sequelize) => void): void {
@@ -45,6 +49,7 @@ export function initializeDb(callback: (sequelize: Sequelize) => void): void {
       Token.initTable(sequelize, Sequelize);
       Positions.initTable(sequelize, Sequelize);
       AdditionsRooms.initTable(sequelize, Sequelize);
+      Bookings.initTable(sequelize, Sequelize);
 
       setRelationships();
 
