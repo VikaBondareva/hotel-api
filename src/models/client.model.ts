@@ -1,20 +1,23 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Model } from 'sequelize';
 import { StatusUsersArray, Validate, CountAttempt } from '../enums';
 
 export class Client extends Model {
-  public clientId!: string;
+  public clientId!: number;
   public name!: string;
   public surname!: string;
-  public email!: string;
   public phoneNumber!: string;
+  public email!: string;
+  public phoneCountryId!: number;
   public status!: number;
+  public gender!: string;
   public attemptLogin!: number;
   public loginCode!: number | null;
-  public readonly created_at!: Date;
-  public readonly updated_at!: Date;
+  public newEmail: string | null;
+  public newPhone: string | null;
+  public readonly createAt!: Date;
+  public readonly updatedAt!: Date;
 
-  static initTable(sequelize: any, DataTypes: any) {
+  public static initTable(sequelize: any, DataTypes: any) {
     Client.init(
       {
         clientId: {
@@ -43,6 +46,29 @@ export class Client extends Model {
           allowNull: false,
           validate: {
             is: Validate.phoneNumber
+          }
+        },
+        phoneCountryId: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+        },
+
+        newEmail: {
+          type: DataTypes.STRING(50),
+          allowNull: true,
+          validate: {
+            isEmail: true
+          }
+        },
+        newPhone: {
+          type: DataTypes.STRING(50),
+          allowNull: true
+        },
+        gender: {
+          type: DataTypes.STRING(10),
+          allowNull: false,
+          validate: {
+            isIn: [['male', 'female']]
           }
         },
         status: {

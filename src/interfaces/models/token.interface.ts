@@ -19,15 +19,15 @@ export interface ITokens {
 }
 
 export interface ISaveTokens {
-  saveRefresh(refreshId: string, userId: string, role?: string): void;
-  saveIdentified(token: string, userId: string): void;
+  saveRefresh(refreshId: string, userId: number, role?: string): void;
+  saveIdentified(token: string, userId: number): void;
 
-  saveAccess(access: string, userId: string): void;
+  saveAccess(access: string, userId: number): void;
 
   deleteAccessRefresh(tokenId: string): void;
-  deleteIdentified(userId: string): void;
+  deleteIdentified(userId: number): void;
 
   findAccessToken(key: string, value?: string): string;
-  findRefreshToken(key: string, value?: string): string;
-  findIdentifiedToken(key: string): string;
+  findRefreshToken(key: number, value?: string): string;
+  findIdentifiedToken(key: number): string;
 }

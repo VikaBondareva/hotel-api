@@ -1,18 +1,19 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Model, Sequelize } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { Validate, StatusUsersArray } from '../enums';
 
 class Employee extends Model {
-  public employeeId!: string;
+  public employeeId!: number;
   public name!: string;
   public surname!: string;
-  public password!: string;
-  public email!: string;
   public phoneNumber!: string;
+  public email!: string;
   public status!: string;
-  public created_at!: string;
-  public updated_at!: string;
+  public password!: string;
+  public positionId!: number;
+  public permissions!: number;
+  public createdAt!: string;
+  public updatedAt!: string;
 
   public static initTable(sequelize: Sequelize, DataTypes: any) {
     Employee.init(
@@ -47,6 +48,18 @@ class Employee extends Model {
           allowNull: false,
           validate: {
             is: Validate.phoneNumber
+          }
+        },
+        positionId: {
+          type: DataTypes.INTEGER,
+          allowNull: false
+        },
+        permissions: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          validate: {
+            min: 100,
+            max: 1750
           }
         },
         status: {

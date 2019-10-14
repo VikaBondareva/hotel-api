@@ -1,4 +1,4 @@
-import { object, string } from 'joi';
+import { object, string, number } from 'joi';
 import { Validate } from '../enums';
 
 export const validateRegisterClient = object().keys({
@@ -32,14 +32,11 @@ export const validateRegisterEmployee = object().keys({
     .required()
     .min(2)
     .max(15),
-  patronymic: string()
-    .required()
-    .min(2)
-    .max(15),
   email: string()
     .email()
     .required(),
-  address: string()
+  positionId: string().required(),
+  permissions: number()
     .required()
-    .min(10)
+    .min(100)
 });

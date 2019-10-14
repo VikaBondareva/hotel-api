@@ -7,6 +7,8 @@ export default [
     email: 'admin@mail.ru',
     password: 'admin',
     phoneNumber: '+375297799188',
-    status: StatusUsers.Active
+    status: StatusUsers.Active,
+    positionId: 1,
+    permissions: 150
   }
 ];

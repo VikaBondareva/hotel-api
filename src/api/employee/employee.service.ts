@@ -14,7 +14,7 @@ import { Roles, StatusUsers } from '../../enums';
 import { Transport, JsonTokens } from '../../utils';
 import { config } from '../../config';
 class EmployeeService {
-  public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: string }> {
+  public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: number }> {
     try {
       const isExist = await Employee.findOne({
         where: { $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }] }
@@ -76,18 +76,18 @@ class EmployeeService {
   //     }
   //   }
 
-  public async changeFirstPassword(data: { newPassword: string }, employee: IEmployee): Promise<Error | boolean> {
-    try {
-      if (!employee) return new Error(logicErr.notFoundUser);
+  // public async changeFirstPassword(data: { newPassword: string }, employee: IEmployee): Promise<Error | boolean> {
+  //   try {
+  //     if (!employee) return new Error(logicErr.notFoundUser);
 
-      employee.status = StatusUsers.Active;
-      employee.password = data.newPassword;
-      await employee.save();
+  //     employee.status = StatusUsers.Active;
+  //     employee.password = data.newPassword;
+  //     await employee.save();
 
-      return true;
-    } catch {
-      return new Error(technicalErr.databaseCrash);
-    }
-  }
+  //     return true;
+  //   } catch {
+  //     return new Error(technicalErr.databaseCrash);
+  //   }
+  // }
 }
 export default new EmployeeService();

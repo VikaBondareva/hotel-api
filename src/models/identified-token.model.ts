@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Model } from 'sequelize';
 
 class TokenIdentified extends Model {
@@ -6,8 +5,8 @@ class TokenIdentified extends Model {
   public token!: string;
   public employeeId!: string;
 
-  static initTable(sequelize: any, DataTypes: any) {
-    return this.init(
+  public static initTable(sequelize: any, DataTypes: any) {
+    return TokenIdentified.init(
       {
         tokenId: {
           type: DataTypes.INTEGER,

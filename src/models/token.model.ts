@@ -1,37 +1,35 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Model, STRING, INTEGER, DATE, BOOLEAN, Sequelize } from 'sequelize';
+import { Model, Sequelize } from 'sequelize';
 
-class Token extends Model {
+class RefreshTokens extends Model {
   public tokenId!: string;
-  public userId!: string;
+  public userId!: number;
   public role!: string;
   public isValid!: boolean;
   public createdAt!: Date;
 
-  static initTable(sequelize: Sequelize) {
-    return this.init(
+  public static initTable(sequelize: Sequelize, DataTypes: any) {
+    return RefreshTokens.init(
       {
         tokenId: {
-          type: STRING('max'),
-          autoIncrement: true,
+          type: DataTypes.STRING,
           primaryKey: true,
           allowNull: false
         },
         userId: {
-          type: INTEGER,
+          type: DataTypes.INTEGER,
           allowNull: false
         },
         role: {
-          type: STRING(520),
+          type: DataTypes.STRING(520),
           allowNull: false
         },
         isValid: {
-          type: BOOLEAN,
+          type: DataTypes.BOOLEAN,
           allowNull: false,
           defaultValue: false
         },
         createdAt: {
-          type: DATE,
+          type: DataTypes.DATE,
           allowNull: false,
           defaultValue: new Date()
         }
@@ -39,10 +37,10 @@ class Token extends Model {
       {
         sequelize,
         timestamps: true,
-        tableName: 'Tokens'
+        tableName: 'RefreshTokens'
       }
     );
   }
 }
 
-export default Token;
+export default RefreshTokens;

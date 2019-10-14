@@ -17,8 +17,8 @@ export interface IEmployeeFieldsToRegister {
   surname: string;
   email: string;
   phoneNumber: string;
-  password?: string;
-  status?: StatusUsers;
+  positionId: number;
+  permissions: number;
 }
 
 export interface IEmployeeResponse {

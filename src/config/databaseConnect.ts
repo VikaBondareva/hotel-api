@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize';
 import { config } from './environment';
 import seedingMongo from './seeds';
 import logger from './winston';
-import { Employee, Client } from '../models';
+import { Employee, Client, Additions, Countries, Token, IdentifiedToken, Rooms } from '../models';
 const { database } = config;
 
 export const sequelize = new Sequelize(database.name, database.login, database.password, {
@@ -20,6 +20,11 @@ export function initializeDb(callback: (sequelize: Sequelize) => void): void {
 
       Employee.initTable(sequelize, Sequelize);
       Client.initTable(sequelize, Sequelize);
+      Additions.initTable(sequelize, Sequelize);
+      Countries.initTable(sequelize, Sequelize);
+      Rooms.initTable(sequelize, Sequelize);
+      IdentifiedToken.initTable(sequelize, Sequelize);
+      Token.initTable(sequelize, Sequelize);
 
       sequelize
         .sync()

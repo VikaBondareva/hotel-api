@@ -4,4 +4,7 @@ export { default as Employee } from './employees.model';
 // export * from './room.model';
 export { default as IdentifiedToken } from './identified-token.model';
 export { default as Token } from './token.model';
+export { default as Countries } from './countries.model';
+export { default as Additions } from './additions.model';
+export { default as Rooms } from './rooms.model';
 // export * from './roomServices.model';

@@ -11,14 +11,14 @@ class Tokens {
     this._tokensToDB = refreshToDB;
   }
 
-  public generationTokens(id: string, role: string): ITokens {
+  public generationTokens(id: number, role: string): ITokens {
     return {
       accessToken: this.generateAccessToken(id, role),
       refreshToken: this.generateRefreshToken(id, role)
     };
   }
 
-  public generateIdentifiedToken(employeeId: string, role: string): string {
+  public generateIdentifiedToken(employeeId: number, role: string): string {
     const token = this.generate(employeeId, config.jwt.identifiedExpiration, role);
     this._tokensToDB.saveIdentified(token, employeeId);
 
@@ -29,25 +29,25 @@ class Tokens {
     this._tokensToDB.deleteAccessRefresh(tokenId);
   }
 
-  public deleteIdentifiedToken(userId: string): void {
+  public deleteIdentifiedToken(userId: number): void {
     this._tokensToDB.deleteIdentified(userId);
   }
 
-  private generateAccessToken(userId: string, role: string): string {
+  private generateAccessToken(userId: number, role: string): string {
     const tokenId = uuid();
     const token = this.generate(userId, config.jwt.accessExpiration, role, tokenId);
     this._tokensToDB.saveAccess(tokenId, userId);
     return token;
   }
 
-  private generateRefreshToken(userId: string, role: string): string {
+  private generateRefreshToken(userId: number, role: string): string {
     const tokenId = uuid();
     this._tokensToDB.saveRefresh(tokenId, userId);
     return this.generate(userId, config.jwt.refreshExpiration, role, tokenId);
   }
 
-  private generate(sub: string, expiresIn: string | number, role: string, id?: string): string {
-    let payload: { sub: string; role: string; id?: string } = { sub, role };
+  private generate(sub: number, expiresIn: number, role: string, id?: string): string {
+    let payload: { sub: number; role: string; id?: string } = { sub, role };
     if (id) {
       payload.id = id;
     }
