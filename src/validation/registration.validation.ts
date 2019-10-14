@@ -16,12 +16,12 @@ export const validateRegisterClient = object().keys({
     .max(15),
   email: string()
     .email()
-    .required()
+    .required(),
+  phoneCountryId: number().required()
 });
 
 export const validateRegisterEmployee = object().keys({
   phoneNumber: string()
-    .length(13)
     .required()
     .regex(Validate.phoneNumber),
   name: string()
@@ -35,7 +35,7 @@ export const validateRegisterEmployee = object().keys({
   email: string()
     .email()
     .required(),
-  positionId: string().required(),
+  positionId: number().required(),
   permissions: number()
     .required()
     .min(100)

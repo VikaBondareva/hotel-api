@@ -1,5 +1,6 @@
 import faker from 'faker';
 import { EmployeeRepository as Employee } from '../../repositories';
+import { Op } from 'sequelize';
 import {
   IEmployeeFieldsToRegister,
   Error,
@@ -11,21 +12,18 @@ import {
 } from '../../interfaces';
 import { logicErr, technicalErr } from '../../errors';
 import { Roles, StatusUsers } from '../../enums';
-import { Transport, JsonTokens } from '../../utils';
+import { JsonTokens } from '../../utils';
 import { config } from '../../config';
 class EmployeeService {
   public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: number }> {
     try {
       const isExist = await Employee.findOne({
-        where: { $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }] }
+        where: { [Op.or]: [{ email: data.email }, { phoneNumber: data.phoneNumber }] }
       });
       if (isExist) return new Error(logicErr.userIsAlreadyRegistered);
 
       const employee = {
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
+        ...data,
         password: faker.internet.password(),
         status: StatusUsers.NeedChangePassword
       };
@@ -35,6 +33,8 @@ class EmployeeService {
         employeeId: newEmployee.employeeId
       };
     } catch (error) {
+      console.log(error);
+
       return new Error(technicalErr.databaseCrash);
     }
   }
@@ -54,8 +54,9 @@ class EmployeeService {
       let dateNow: Date = new Date();
       dateNow.setSeconds(dateNow.getSeconds() + config.jwt.accessExpiration);
 
+      const { password, ...user } = employee;
       return {
-        user: employee,
+        user,
         tokens: {
           ...tokens,
           access_expires_in: dateNow.getTime()
@@ -65,16 +66,6 @@ class EmployeeService {
       return new Error(technicalErr.databaseCrash);
     }
   }
-
-  //   public async getCurrent(data: IEmployeeModel): Promise<Error | IUser> {
-  //     try {
-  //       if (!data) return new Error(logicErr.notFoundUser);
-  //       const dataObj = data.toObject();
-  //       return dataObj;
-  //     } catch (error) {
-  //       return new Error(technicalErr.databaseCrash);
-  //     }
-  //   }
 
   // public async changeFirstPassword(data: { newPassword: string }, employee: IEmployee): Promise<Error | boolean> {
   //   try {

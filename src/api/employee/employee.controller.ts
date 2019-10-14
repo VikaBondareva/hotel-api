@@ -3,9 +3,10 @@ import EmployeeService from './employee.service';
 import { Transport, JsonTokens } from '../../utils';
 import { Error, EmailService } from '../../interfaces';
 import { Roles } from '../../enums';
+import { logicErr } from '../../errors';
 
 class EmployeeController {
-  private _transporter: Transport = new Transport(new EmailService());
+  private static _transporter: Transport = new Transport(new EmailService());
 
   public postRegister(req: Request, res: Response): void {
     const origin = req.headers.origin;
@@ -13,8 +14,7 @@ class EmployeeController {
     EmployeeService.register(req.body).then(result => {
       if (!(result instanceof Error)) {
         const token: string = JsonTokens.generateIdentifiedToken(result.employeeId, Roles.Employee);
-
-        this._transporter.sendLinkToChangePassword(origin, req.body.email, token, req.body.name);
+        EmployeeController._transporter.sendLinkToChangePassword(origin, req.body.email, token, req.body.name);
         res.status(201).json({ success: true });
       } else res.status(result.status).json({ message: result.message, success: false });
     });
@@ -28,13 +28,14 @@ class EmployeeController {
     );
   }
 
-  //   public getCurrent(req: Request, res: Response): void {
-  //     EmployeeService.getCurrent(req.user).then(result =>
-  //       !(result instanceof Error)
-  //         ? res.status(200).json({ user: result })
-  //         : res.status(result.status).json({ message: result.message, success: false })
-  //     );
-  //   }
+  public getCurrent(req: any, res: Response): void {
+    if (!req.user) {
+      res.status(logicErr.notFoundUser.code).json({ message: logicErr.notFoundUser.msg, success: false });
+    } else {
+      const { password, ...user } = req.user;
+      res.status(200).json({ user });
+    }
+  }
 
   // public changePassword(req: Request, res: Response): void {
   //   EmployeeService.changeFirstPassword(req.body, req.user).then(result =>

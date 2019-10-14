@@ -1,15 +1,19 @@
 import { Model } from 'sequelize';
 export interface IClient extends Model {
-  clientId: string;
+  clientId: number;
   name: string;
   surname: string;
   email: string;
   phoneNumber: string;
+  phoneCountryId: number;
+  gender: string;
   status: number;
   attemptLogin: number;
   loginCode: number | null;
-  created_at: Date;
-  updated_at: Date;
+  newEmail: string | null;
+  newPhone: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IClientFieldsToRegister {

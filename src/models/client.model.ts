@@ -14,8 +14,8 @@ export class Client extends Model {
   public loginCode!: number | null;
   public newEmail: string | null;
   public newPhone: string | null;
-  public readonly createAt!: Date;
-  public readonly updatedAt!: Date;
+  public createAt!: string;
+  public updatedAt!: string;
 
   public static initTable(sequelize: any, DataTypes: any) {
     Client.init(

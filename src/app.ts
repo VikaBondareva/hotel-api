@@ -1,7 +1,7 @@
 import express, { Response, Request, NextFunction } from 'express';
 import morgan from 'morgan';
 import router from './routes';
-import { initializeDb, logger, config } from './config';
+import { initializeDb, Passport, initialize, logger, config } from './config';
 
 class App {
   public app: express.Application;
@@ -28,8 +28,8 @@ class App {
   private config(): void {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    // this.app.use(initialize());
-    // Passport.jwtStrategy();
+    this.app.use(initialize());
+    Passport.jwtStrategy();
     this.app.use('/api/', router);
     initializeDb((): void => {});
   }
