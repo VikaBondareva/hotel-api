@@ -17,7 +17,8 @@ export class Rooms extends Model {
         roomId: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          allowNull: false
+          allowNull: false,
+          unique: true
         },
         floor: {
           type: DataTypes.INTEGER,

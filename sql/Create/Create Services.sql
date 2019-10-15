@@ -9,5 +9,5 @@ CREATE TABLE [dbo].[Services](
 	[status] [nvarchar](20) NOT NULL DEFAULT 'work',
 	[maxPerson] [int]  NULL,
 	[site] [nvarchar](max) NULL,
-	[ptice] [money] NOT NULL CHECK(ptice >= 0.0)
+	[price] [money] NOT NULL CHECK(price >= 0.0)
 )

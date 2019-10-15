@@ -12,7 +12,10 @@ import {
   Rooms,
   Positions,
   AdditionsRooms,
-  Bookings
+  Bookings,
+  Complaints,
+  ComplaintsEmployees,
+  Services
 } from '../models';
 const { database } = config;
 
@@ -31,6 +34,10 @@ const setRelationships = async () => {
 
   Client.hasMany(Bookings, { foreignKey: 'clientId' });
   Rooms.hasMany(Bookings, { foreignKey: 'roomId' });
+
+  Client.hasOne(Complaints, { foreignKey: 'clientId' });
+  Employee.hasMany(ComplaintsEmployees, { foreignKey: 'employeeId' });
+  Complaints.hasMany(ComplaintsEmployees, { foreignKey: 'complaintId' });
 };
 
 export function initializeDb(callback: (sequelize: Sequelize) => void): void {
@@ -50,6 +57,9 @@ export function initializeDb(callback: (sequelize: Sequelize) => void): void {
       Positions.initTable(sequelize, Sequelize);
       AdditionsRooms.initTable(sequelize, Sequelize);
       Bookings.initTable(sequelize, Sequelize);
+      Complaints.initTable(sequelize, Sequelize);
+      ComplaintsEmployees.initTable(sequelize, Sequelize);
+      Services.initTable(sequelize, Sequelize);
 
       setRelationships();
 
