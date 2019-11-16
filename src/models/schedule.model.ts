@@ -5,10 +5,10 @@ export class Schedule extends Model {
   public scheduleId!: number;
   public serviceId!: number;
   public dayOfWeek!: number;
-  public startTime!: Date;
-  public endTime!: Date;
-  public startLunch: Date;
-  public endLunch: Date;
+  public startTime!: string;
+  public endTime!: string;
+  public startLunch: string;
+  public endLunch: string;
 
   public static initTable(sequelize: any) {
     return Schedule.init(
@@ -17,6 +17,7 @@ export class Schedule extends Model {
           type: Sequelize.INTEGER,
           primaryKey: true,
           allowNull: false,
+          autoIncrement: true,
           field: 'sheduleId'
         },
         serviceId: {
@@ -27,25 +28,25 @@ export class Schedule extends Model {
           type: Sequelize.INTEGER,
           allowNull: false,
           validate: {
-            min: 0,
-            max: 6
+            min: 1,
+            max: 7
           }
         },
         startTime: {
-          type: Sequelize.TIME,
+          type: Sequelize.STRING(5),
           allowNull: false
         },
         endTime: {
-          type: Sequelize.TIME,
+          type: Sequelize.STRING(5),
           allowNull: false
         },
         startLunch: {
-          type: Sequelize.TIME,
-          allowNull: false
+          type: Sequelize.STRING(5),
+          allowNull: true
         },
         endLunch: {
-          type: Sequelize.TIME,
-          allowNull: false
+          type: Sequelize.STRING(5),
+          allowNull: true
         }
       },
       {
