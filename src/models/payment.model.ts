@@ -19,7 +19,8 @@ export class Payment extends Model {
         paymentId: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-          allowNull: false
+          allowNull: false,
+          autoIncrement: true
         },
         bookingId: {
           type: Sequelize.INTEGER,
@@ -80,6 +81,12 @@ export class Payment extends Model {
       as: 'service',
       foreignKey: 'serviceId',
       targetKey: 'serviceId'
+    });
+
+    this.belongsToMany(models.Employee, {
+      through: models.EmployeeToPayment,
+      sourceKey: 'paymentId',
+      foreignKey: 'paymentId'
     });
   }
 }

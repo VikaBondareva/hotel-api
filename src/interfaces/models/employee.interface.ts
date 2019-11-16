@@ -38,3 +38,10 @@ export interface IEmployeeToLogin {
   email: string;
   password: string;
 }
+
+export interface IEmployeeToPayment extends Model {
+  paymentId: string;
+  employeeId: string;
+  status: string;
+  createdDate: string;
+}

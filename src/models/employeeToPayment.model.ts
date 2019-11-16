@@ -2,15 +2,20 @@ import { Model } from 'sequelize';
 import Sequelize from 'sequelize';
 
 export class EmployeeToPayment extends Model {
-  public id!: number;
-  public paymentId!: number;
-  public employeeId!: number;
-  public createdDate!: Date;
+  public paymentId: string;
+  public employeeId: string;
+  public createdDate!: string;
   public status!: string;
 
   public static initTable(sequelize: any) {
     return EmployeeToPayment.init(
       {
+        id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          autoIncrement: true
+        },
         paymentId: {
           type: Sequelize.INTEGER,
           allowNull: false
@@ -30,12 +35,6 @@ export class EmployeeToPayment extends Model {
         }
       },
       {
-        indexes: [
-          {
-            unique: true,
-            fields: ['paymentId', 'employeeId']
-          }
-        ],
         sequelize,
         timestamps: false,
         tableName: 'EmployeesPayments'
