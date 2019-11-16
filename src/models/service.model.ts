@@ -76,7 +76,7 @@ export class Services extends Model {
     this.hasMany(models.Payment, {
       as: 'payments',
       sourceKey: 'serviceId',
-      foreignKey: 'scheduleId'
+      foreignKey: 'serviceId'
     });
   }
 }

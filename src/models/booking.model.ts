@@ -28,11 +28,11 @@ export class Bookings extends Model {
           allowNull: true
         },
         arrivalDate: {
-          type: DataTypes.DATE,
+          type: DataTypes.DATEONLY,
           allowNull: false
         },
         departureDate: {
-          type: DataTypes.DATE,
+          type: DataTypes.DATEONLY,
           allowNull: false
         },
         countPersons: {

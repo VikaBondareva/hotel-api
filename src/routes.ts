@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { version } from '../package.json';
-import { employeeRouter, roomRouter, additionRouter, serviceRouter } from './api';
+import { employeeRouter, roomRouter, additionRouter, serviceRouter, bookingRouter, clientRouter } from './api';
 const router = Router();
 
 router.get('/health', (req: Request, res: Response) => {
@@ -17,5 +17,7 @@ router.use('/employees', employeeRouter);
 router.use('/rooms', roomRouter);
 router.use('/additions', additionRouter);
 router.use('/services', serviceRouter);
+router.use('/bookings', bookingRouter);
+router.use('/clients', clientRouter);
 
 export default router;

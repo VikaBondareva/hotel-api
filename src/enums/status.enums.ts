@@ -21,3 +21,10 @@ export enum StatusService {
   Blocked = 'blocked',
   NotAvailable = 'notAvailable'
 }
+
+export enum StatusBookings {
+  Pending = 'pending',
+  Paid = 'paid',
+  Affected = 'affected',
+  Canceled = 'canceled'
+}

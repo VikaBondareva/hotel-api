@@ -87,7 +87,7 @@ export class Client extends Model {
           }
         ],
         sequelize,
-        timestamps: true,
+        timestamps: false,
         tableName: 'Clients'
       }
     );

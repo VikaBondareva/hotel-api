@@ -6,3 +6,4 @@ export * from './token.interface';
 export * from './user.interface';
 export * from './room.interface';
 export * from './service.interface';
+export * from './booking.interface';
