@@ -36,6 +36,18 @@ class EmployeeController {
       res.status(200).json({ user });
     }
   }
+
+  public async getAll(req: Request, res: Response): Promise<void> {
+    const result = await EmployeeService.getAll();
+
+    res.status(200).json(result);
+  }
+
+  public async getById(req: Request, res: Response): Promise<void> {
+    const result = await EmployeeService.getById(req.params.id);
+
+    res.status(200).json(result);
+  }
 }
 
 export const employeeController = new EmployeeController();

@@ -46,7 +46,8 @@ export class Services extends Model {
         },
         site: {
           type: DataTypes.STRING('max'),
-          allowNull: true
+          allowNull: true,
+          defaultValue: null
         },
         price: {
           type: DataTypes.FLOAT,

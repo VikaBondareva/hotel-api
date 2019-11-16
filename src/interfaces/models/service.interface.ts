@@ -29,6 +29,6 @@ export interface IServiceUpdate {
   type: string;
   status: string;
   maxPerson: number;
-  site: string;
+  site?: string;
   price: number;
 }

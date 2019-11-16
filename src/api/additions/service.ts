@@ -11,18 +11,18 @@ class RoomService {
   }
 
   public async getById(id: string): Promise<IAddition> {
-    return Additions.findOne({ where: { additionsId: id }, raw: true });
+    return Additions.findOne({ where: { additionId: id }, raw: true });
   }
 
-  public async update(additionsId: string, data: IAdditionCreate): Promise<IAddition | boolean> {
-    const addition = await Additions.findOne({ where: { additionsId } });
+  public async update(additionId: string, data: IAdditionCreate): Promise<IAddition | boolean> {
+    const addition = await Additions.findOne({ where: { additionId } });
     if (addition) {
       return addition.update(data);
     }
     return false;
   }
-  public async remove(additionsId: string): Promise<boolean> {
-    const result = await Additions.destroy({ where: { additionsId } })
+  public async remove(additionId: string): Promise<boolean> {
+    const result = await Additions.destroy({ where: { additionId } })
       .then(() => true)
       .catch(() => false);
 

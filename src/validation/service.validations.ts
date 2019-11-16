@@ -1,4 +1,5 @@
 import { object, string, number } from 'joi';
+import { StatusService } from '../enums/status.enums';
 
 export const serviceCreate = object().keys({
   numberOfRoom: number()
@@ -8,7 +9,7 @@ export const serviceCreate = object().keys({
     .positive()
     .required(),
   name: string().required(),
-  type: string(),
+  type: string().required(),
   maxPerson: number()
     .min(0)
     .required(),
@@ -26,7 +27,7 @@ export const serviceUpdate = object().keys({
     .positive()
     .required(),
   name: string().required(),
-  type: string(),
+  type: string().default('inner'),
   maxPerson: number()
     .min(0)
     .required(),
@@ -34,5 +35,5 @@ export const serviceUpdate = object().keys({
   price: number()
     .required()
     .min(0),
-  status: string().required()
+  status: string().default('work')
 });

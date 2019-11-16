@@ -1,6 +1,7 @@
 import faker from 'faker';
 import { EmployeeRepository as Employee } from '../../repositories';
 import { Op } from 'sequelize';
+import { Employee as EmployeeModel, Positions, Payment } from '../../models';
 import {
   IEmployeeFieldsToRegister,
   Error,
@@ -69,18 +70,23 @@ class EmployeeService {
     }
   }
 
-  // public async changeFirstPassword(data: { newPassword: string }, employee: IEmployee): Promise<Error | boolean> {
-  //   try {
-  //     if (!employee) return new Error(logicErr.notFoundUser);
+  public async getAll(): Promise<IEmployee[]> {
+    const employees = await EmployeeModel.findAll({
+      attributes: { exclude: ['positionId'] },
+      include: [{ model: Positions, as: 'position' }]
+    });
 
-  //     employee.status = StatusUsers.Active;
-  //     employee.password = data.newPassword;
-  //     await employee.save();
+    return employees;
+  }
 
-  //     return true;
-  //   } catch {
-  //     return new Error(technicalErr.databaseCrash);
-  //   }
-  // }
+  public async getById(employeeId: string): Promise<IEmployee[]> {
+    const employees = await EmployeeModel.findAll({
+      where: { employeeId },
+      attributes: { exclude: ['positionId'] },
+      include: [{ model: Positions, as: 'position' }]
+    });
+
+    return employees;
+  }
 }
 export default new EmployeeService();

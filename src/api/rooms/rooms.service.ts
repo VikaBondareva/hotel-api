@@ -1,5 +1,5 @@
 import { IRoomCreate, IRoom } from '../../interfaces';
-import { Rooms } from '../../models';
+import { Rooms, Additions, AdditionsRooms } from '../../models';
 import { StatusService } from '../../enums';
 
 class RoomService {
@@ -8,11 +8,22 @@ class RoomService {
   }
 
   public async getAll(): Promise<IRoom[]> {
-    return Rooms.findAll();
+    const rooms = await Rooms.findAll({
+      include: [{ model: Additions, as: 'additions' }]
+    });
+
+    return rooms.map((room: any): any => {
+      return this.convertRoom(room.get({ plain: true }));
+    });
   }
 
   public async getById(id: string): Promise<IRoom> {
-    return Rooms.findOne({ where: { roomId: id }, raw: true });
+    const room = await Rooms.findOne({
+      where: { roomId: id },
+      include: [{ model: Additions, as: 'additions' }]
+    });
+
+    return this.convertRoom(room.get({ plain: true }));
   }
 
   public async update(_id: string, data: IRoomCreate): Promise<IRoom | boolean> {
@@ -28,6 +39,22 @@ class RoomService {
       .catch(() => false);
 
     return result;
+  }
+
+  private convertRoom(room: any) {
+    return {
+      ...room,
+      additions: room.additions.map((record: any) => {
+        const addition = {
+          name: record.name,
+          price: record.price,
+          additionId: record.additionId,
+          status: record.AdditionsRooms.status
+        };
+
+        return addition;
+      })
+    };
   }
 }
 
