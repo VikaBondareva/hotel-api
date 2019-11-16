@@ -12,11 +12,6 @@ export interface IRoom extends Model {
   status: string;
 }
 
-export interface IRoomService extends Document {
-  name: string;
-  price: number;
-}
-
 export interface IRoomCreate {
   roomId: number;
   floor: number;

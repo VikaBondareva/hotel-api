@@ -1,4 +1,4 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 
 export class Rooms extends Model {
   public roomId!: number;
@@ -11,14 +11,13 @@ export class Rooms extends Model {
   public price!: number;
   public status!: string;
 
-  public static initTable(sequelize: any, DataTypes: any) {
-    Rooms.init(
+  public static initTable(sequelize: any) {
+    return Rooms.init(
       {
         roomId: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          allowNull: false,
-          unique: true
+          allowNull: false
         },
         floor: {
           type: DataTypes.INTEGER,
@@ -70,23 +69,30 @@ export class Rooms extends Model {
           }
         },
         status: {
-          type: DataTypes.STRING(20),
+          type: DataTypes.STRING(10),
           allowNull: false
         }
       },
       {
-        indexes: [
-          {
-            unique: true,
-            fields: ['roomId', 'floor']
-          }
-        ],
         sequelize,
         timestamps: false,
         tableName: 'Rooms'
       }
     );
   }
-}
 
-export default Rooms;
+  public static associate(models: any) {
+    this.belongsToMany(models.Additions, {
+      as: 'additions',
+      through: models.AdditionsRooms,
+      sourceKey: 'roomId',
+      foreignKey: 'roomId'
+    });
+
+    this.belongsTo(models.AdditionsRooms, {
+      as: 'additionsRooms',
+      foreignKey: 'roomId',
+      targetKey: 'roomId'
+    });
+  }
+}

@@ -8,7 +8,7 @@ import { logicErr } from '../../errors';
 class EmployeeController {
   private static _transporter: Transport = new Transport(new EmailService());
 
-  public postRegister(req: Request, res: Response): void {
+  public create(req: Request, res: Response): void {
     const origin = req.headers.origin;
 
     EmployeeService.register(req.body).then(result => {
@@ -36,14 +36,6 @@ class EmployeeController {
       res.status(200).json({ user });
     }
   }
-
-  // public changePassword(req: Request, res: Response): void {
-  //   EmployeeService.changeFirstPassword(req.body, req.user).then(result =>
-  //     !(result instanceof Error)
-  //       ? res.status(200).json({ success: true })
-  //       : res.status(result.status).json({ message: result.message, success: false })
-  //   );
-  // }
 }
 
 export const employeeController = new EmployeeController();

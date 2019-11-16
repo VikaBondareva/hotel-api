@@ -1,21 +1,27 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 
 export class ComplaintsEmployees extends Model {
   public complaintId!: number;
   public employeeId!: number;
+  public clientId!: number;
   public descriptionReason!: string;
   public createDate!: Date;
 
-  public static initTable(sequelize: any, DataTypes: any) {
-    ComplaintsEmployees.init(
+  public static initTable(sequelize: any) {
+    return ComplaintsEmployees.init(
       {
         complaintId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true
+        },
+        clientId: {
           type: DataTypes.INTEGER,
           allowNull: false
         },
         employeeId: {
           type: DataTypes.INTEGER,
-          allowNull: false
+          allowNull: true
         },
         descriptionReason: {
           type: DataTypes.STRING('max'),
@@ -24,21 +30,27 @@ export class ComplaintsEmployees extends Model {
         createDate: {
           type: DataTypes.DATE,
           allowNull: false,
-          field: 'created_at'
+          defaultValue: DataTypes.NOW
         }
       },
       {
-        indexes: [
-          {
-            unique: true,
-            fields: ['employeeId', 'createDate']
-          }
-        ],
         sequelize,
-        timestamps: true,
-        underscored: true,
+        timestamps: false,
         tableName: 'ComplaintsEmployees'
       }
     );
+  }
+
+  public static associate(models: any) {
+    this.belongsTo(models.Client, {
+      as: 'client',
+      foreignKey: 'clientId',
+      targetKey: 'clientId'
+    });
+    this.belongsTo(models.Employee, {
+      as: 'employee',
+      foreignKey: 'employeeId',
+      targetKey: 'employeeId'
+    });
   }
 }

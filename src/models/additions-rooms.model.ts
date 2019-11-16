@@ -1,27 +1,27 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 
-export class AdditionRooms extends Model {
+export class AdditionsRooms extends Model {
   public additionId!: number;
   public roomId!: number;
   public status!: string;
 
-  public static initTable(sequelize: any, DataTypes: any) {
-    AdditionRooms.init(
+  public static initTable(sequelize: any) {
+    return AdditionsRooms.init(
       {
         status: {
-          type: DataTypes.STRING(50),
+          type: DataTypes.STRING(10),
           allowNull: false
+        },
+        roomId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true
+        },
+        additionId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true
         }
-        // roomId: {
-        //   type: DataTypes.INTEGER,
-        //   allowNull: false,
-        //   primaryKey: true
-        // },
-        // additionId: {
-        //   type: DataTypes.INTEGER,
-        //   allowNull: false,
-        //   primaryKey: true
-        // }
       },
       {
         indexes: [
@@ -32,10 +32,22 @@ export class AdditionRooms extends Model {
         ],
         sequelize,
         timestamps: false,
-        tableName: 'AdditionRooms'
+        tableName: 'AdditionsRooms'
       }
     );
   }
-}
 
-export default AdditionRooms;
+  public static associate(models: any) {
+    this.belongsTo(models.Additions, {
+      as: 'addition',
+      foreignKey: 'additionId',
+      targetKey: 'additionId'
+    });
+
+    this.belongsTo(models.Rooms, {
+      as: 'room',
+      foreignKey: 'roomId',
+      targetKey: 'roomId'
+    });
+  }
+}

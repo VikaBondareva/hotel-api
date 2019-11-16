@@ -1,15 +1,14 @@
-import { Model, Sequelize } from 'sequelize';
+import DataTypes, { Model, Sequelize } from 'sequelize';
 
 export class Positions extends Model {
   public positionId!: number;
   public positionName!: string;
 
-  public static initTable(sequelize: Sequelize, DataTypes: any) {
-    Positions.init(
+  public static initTable(sequelize: Sequelize) {
+    return Positions.init(
       {
         positionId: {
           type: DataTypes.INTEGER,
-          autoIncrement: true,
           primaryKey: true,
           allowNull: false
         },
@@ -26,5 +25,3 @@ export class Positions extends Model {
     );
   }
 }
-
-export default Positions;

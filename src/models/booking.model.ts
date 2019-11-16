@@ -1,4 +1,4 @@
-import { Model, Sequelize } from 'sequelize';
+import DataTypes, { Model, Sequelize } from 'sequelize';
 
 export class Bookings extends Model {
   public bookingId!: number;
@@ -10,8 +10,8 @@ export class Bookings extends Model {
   public bookingTime!: string;
   public status!: string;
 
-  public static initTable(sequelize: Sequelize, DataTypes: any) {
-    Bookings.init(
+  public static initTable(sequelize: Sequelize) {
+    return Bookings.init(
       {
         bookingId: {
           type: DataTypes.INTEGER,
@@ -62,6 +62,15 @@ export class Bookings extends Model {
       }
     );
   }
-}
 
-export default Bookings;
+  public static associate(models: any) {
+    this.belongsTo(models.Rooms, { as: 'room', foreignKey: 'roomId', targetKey: 'roomId' });
+    this.belongsTo(models.Client, { as: 'client', foreignKey: 'clientId', targetKey: 'clientId' });
+
+    this.hasMany(models.Payment, {
+      as: 'payments',
+      sourceKey: 'bookingId',
+      foreignKey: 'bookingId'
+    });
+  }
+}

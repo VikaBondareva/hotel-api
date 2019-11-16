@@ -1,14 +1,13 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 
 export class Additions extends Model {
   public additionsId!: number;
   public name!: string;
   public price!: number;
-
-  public static initTable(sequelize: any, DataTypes: any) {
-    Additions.init(
+  public static initTable(sequelize: any) {
+    return Additions.init(
       {
-        additionsId: {
+        additionId: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true,
@@ -16,7 +15,8 @@ export class Additions extends Model {
         },
         name: {
           type: DataTypes.STRING(50),
-          allowNull: false
+          allowNull: false,
+          unique: true
         },
         price: {
           type: DataTypes.FLOAT,
@@ -24,18 +24,19 @@ export class Additions extends Model {
         }
       },
       {
-        indexes: [
-          {
-            unique: true,
-            fields: ['name', 'price']
-          }
-        ],
         sequelize,
         timestamps: false,
         tableName: 'Additions'
       }
     );
   }
-}
 
-export default Additions;
+  public static associate(models: any) {
+    this.belongsToMany(models.Rooms, {
+      as: 'rooms',
+      through: models.AdditionsRooms,
+      sourceKey: 'additionId',
+      foreignKey: 'additionId'
+    });
+  }
+}

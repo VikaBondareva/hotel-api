@@ -18,5 +18,6 @@ export enum CountAttempt {
 
 export enum StatusService {
   Available = 'available',
+  Blocked = 'blocked',
   NotAvailable = 'notAvailable'
 }

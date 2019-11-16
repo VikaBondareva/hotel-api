@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import controller from './rooms.controller';
+import controller from './controller';
 import { validation } from '../../middleware';
 import { roomCreate } from '../../validation';
 
@@ -13,4 +13,4 @@ router.get('/:id', controller.getById);
 router.put('/:id', validation(roomCreate), controller.update);
 router.delete('/:id', controller.remove);
 
-export const roomRouter = router;
+export const additionRouter = router;

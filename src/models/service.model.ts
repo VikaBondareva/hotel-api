@@ -1,4 +1,4 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 
 export class Services extends Model {
   public serviceId!: number;
@@ -11,14 +11,14 @@ export class Services extends Model {
   public site!: string;
   public price!: number;
 
-  public static initTable(sequelize: any, DataTypes: any) {
-    Services.init(
+  public static initTable(sequelize: any) {
+    return Services.init(
       {
         serviceId: {
           type: DataTypes.INTEGER,
-          autoIncrement: true,
           primaryKey: true,
-          allowNull: false
+          allowNull: false,
+          autoIncrement: true
         },
         numberOfRoom: {
           type: DataTypes.INTEGER,
@@ -53,14 +53,29 @@ export class Services extends Model {
           allowNull: false,
           validate: {
             min: 0
-          }
+          },
+          field: 'ptice'
         }
       },
       {
         sequelize,
-        timestamps: true,
+        timestamps: false,
         tableName: 'Services'
       }
     );
+  }
+
+  public static associate(models: any) {
+    this.hasMany(models.Schedule, {
+      as: 'schedules',
+      sourceKey: 'serviceId',
+      foreignKey: 'serviceId'
+    });
+
+    this.hasMany(models.Payment, {
+      as: 'payments',
+      sourceKey: 'serviceId',
+      foreignKey: 'scheduleId'
+    });
   }
 }

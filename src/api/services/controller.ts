@@ -1,7 +1,7 @@
-import service from './rooms.service';
+import service from './service';
 import { Request, Response } from 'express';
 
-class RoomController {
+class AdditionController {
   public async create(req: Request, res: Response): Promise<void> {
     const result = await service.create(req.body);
 
@@ -35,4 +35,4 @@ class RoomController {
   }
 }
 
-export default new RoomController();
+export default new AdditionController();

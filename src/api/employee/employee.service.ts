@@ -15,22 +15,24 @@ import { Roles, StatusUsers } from '../../enums';
 import { JsonTokens } from '../../utils';
 import { config } from '../../config';
 class EmployeeService {
-  public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: number }> {
+  public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: number; password: string }> {
     try {
       const isExist = await Employee.findOne({
         where: { [Op.or]: [{ email: data.email }, { phoneNumber: data.phoneNumber }] }
       });
       if (isExist) return new Error(logicErr.userIsAlreadyRegistered);
 
+      const password = faker.internet.password();
       const employee = {
         ...data,
-        password: faker.internet.password(),
+        password,
         status: StatusUsers.NeedChangePassword
       };
 
       const newEmployee = await Employee.create(employee);
       return {
-        employeeId: newEmployee.employeeId
+        employeeId: newEmployee.employeeId,
+        password
       };
     } catch (error) {
       console.log(error);
