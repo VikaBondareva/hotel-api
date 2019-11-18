@@ -1,6 +1,8 @@
 import { IBooking, IBookingCreate } from '../../../interfaces';
 import { Bookings } from '../../../models';
 import { StatusBookings } from '../../../enums';
+import { sequelize } from '../../../config/databaseConnect';
+import Sequelize from 'sequelize';
 
 class BookingServiceClient {
   public async create(data: IBookingCreate): Promise<IBooking> {
@@ -32,6 +34,13 @@ class BookingServiceClient {
       return result;
     }
     return false;
+  }
+
+  public async getAllPrice(clientId: string): Promise<IBooking[]> {
+    return sequelize.query(`Exec SelectBookingsByClientId :clientId`, {
+      replacements: { clientId },
+      type: Sequelize.QueryTypes.SELECT
+    });
   }
 }
 

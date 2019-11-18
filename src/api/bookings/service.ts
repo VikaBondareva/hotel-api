@@ -20,8 +20,11 @@ class BookingService {
     return Bookings.findAll(query);
   }
 
-  public async getById(id: string): Promise<IBooking> {
-    return Bookings.findOne({ where: { bookingId: id }, raw: true, ...selects });
+  public async getById(id: string, isPayments: boolean): Promise<IBooking> {
+    let query;
+    if (isPayments) query = selectsPayments;
+    else query = selects;
+    return Bookings.findOne({ where: { bookingId: id }, ...query });
   }
 
   public async updateStatus(bookingId: string, status: string): Promise<IBooking | boolean> {

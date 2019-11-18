@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { validation } from '../../middleware';
 import { validateRegisterEmployee } from '../../validation';
 import { tasksRouter } from './tasks';
+import { scheduleRoutes } from './schedules';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.get('/', employeeController.getAll);
 router.get('/:id', employeeController.getById);
 
 router.use('/:id/tasks', tasksRouter);
+router.use('/:id/schedules', scheduleRoutes);
 
 export const employeeRouter = router;
