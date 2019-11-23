@@ -17,7 +17,7 @@ class BookingController {
   }
 
   public async updateStatus(req: Request, res: Response): Promise<void> {
-    const result = await service.updateStatus(req.params.id, req.body);
+    const result = await service.updateStatus(req.params.id, req.body.status);
 
     if (result) res.status(200).json(result);
     else res.sendStatus(400);

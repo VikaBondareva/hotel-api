@@ -30,7 +30,7 @@ class BookingService {
   public async updateStatus(bookingId: string, status: string): Promise<IBooking | boolean> {
     const model = await Bookings.findOne({ where: { bookingId } });
     if (model) {
-      return model.update({ status });
+      return model.update({ status, bookingId });
     }
     return false;
   }
