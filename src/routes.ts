@@ -6,7 +6,8 @@ import {
   additionRouter,
   serviceRouter,
   bookingRouter,
-  clientRouter
+  clientRouter,
+  activitiesRouter
   // paymentsRotes
 } from './api';
 const router = Router();
@@ -27,6 +28,7 @@ router.use('/additions', additionRouter);
 router.use('/services', serviceRouter);
 router.use('/bookings', bookingRouter);
 router.use('/clients', clientRouter);
+router.use('/activities', activitiesRouter);
 // router.use('/payments', paymentsRotes);
 
 export default router;

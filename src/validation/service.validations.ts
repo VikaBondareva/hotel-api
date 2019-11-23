@@ -6,7 +6,7 @@ export const serviceCreate = object().keys({
     .min(0)
     .required(),
   floor: number()
-    .positive()
+    .min(0)
     .required(),
   name: string().required(),
   type: string().required(),
@@ -24,14 +24,13 @@ export const serviceUpdate = object().keys({
     .min(0)
     .required(),
   floor: number()
-    .positive()
+    .min(0)
     .required(),
   name: string().required(),
   type: string().default('inner'),
   maxPerson: number()
     .min(0)
     .required(),
-  site: string(),
   price: number()
     .required()
     .min(0),
