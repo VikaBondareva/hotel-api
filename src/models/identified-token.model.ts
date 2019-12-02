@@ -1,12 +1,12 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 
-class TokenIdentified extends Model {
+export class IdentifiedToken extends Model {
   public tokenId!: string;
   public token!: string;
   public employeeId!: string;
 
-  public static initTable(sequelize: any, DataTypes: any) {
-    return TokenIdentified.init(
+  public static initTable(sequelize: any) {
+    return IdentifiedToken.init(
       {
         tokenId: {
           type: DataTypes.INTEGER,
@@ -31,5 +31,3 @@ class TokenIdentified extends Model {
     );
   }
 }
-
-export default TokenIdentified;

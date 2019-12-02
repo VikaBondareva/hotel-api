@@ -14,6 +14,6 @@ export class ClientRepository {
   };
 
   public static findById = async (id: string) => {
-    return await Client.findOne<Client>();
+    return await Client.findOne<Client>({ raw: true });
   };
 }

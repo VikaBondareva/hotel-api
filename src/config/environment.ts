@@ -37,6 +37,6 @@ export const config = {
   email: {
     host: envVars.EMAIL_SERVER_HOST,
     user: envVars.GMAIL_AUTH_USER,
-    pass: envVars.GMAIL_AUTH_PASS
+    pass: envVars.GMAIL_AUTH_PASS || 'rjE9X[?&N~XW'
   }
 };

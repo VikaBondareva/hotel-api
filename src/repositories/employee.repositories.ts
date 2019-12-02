@@ -28,7 +28,7 @@ export class EmployeeRepository {
   };
 
   public static findById = async (id: string) => {
-    return await Employee.findOne<Employee>({ where: { employeeId: id } });
+    return await Employee.findOne<Employee>({ where: { employeeId: id }, raw: true });
   };
 
   public static findOne = async (options: any) => {

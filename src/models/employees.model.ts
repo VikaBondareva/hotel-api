@@ -1,8 +1,8 @@
-import { Model, Sequelize } from 'sequelize';
+import DataTypes, { Model, Sequelize } from 'sequelize';
 import bcrypt from 'bcrypt';
 import { Validate, StatusUsersArray } from '../enums';
 
-class Employee extends Model {
+export class Employee extends Model {
   public employeeId!: number;
   public name!: string;
   public surname!: string;
@@ -15,12 +15,11 @@ class Employee extends Model {
   public createdAt!: string;
   public updatedAt!: string;
 
-  public static initTable(sequelize: Sequelize, DataTypes: any) {
+  public static initTable(sequelize: Sequelize) {
     Employee.init(
       {
         employeeId: {
           type: DataTypes.INTEGER,
-          autoIncrement: true,
           primaryKey: true,
           allowNull: false
         },
@@ -33,14 +32,14 @@ class Employee extends Model {
           allowNull: false
         },
         email: {
-          type: DataTypes.STRING(50),
+          type: DataTypes.STRING(30),
           allowNull: false,
           validate: {
             isEmail: true
           }
         },
         password: {
-          type: DataTypes.STRING(500),
+          type: DataTypes.STRING('max'),
           allowNull: false
         },
         phoneNumber: {
@@ -60,7 +59,8 @@ class Employee extends Model {
           validate: {
             min: 100,
             max: 1750
-          }
+          },
+          field: 'permisions'
         },
         status: {
           type: DataTypes.STRING(20),
@@ -78,7 +78,7 @@ class Employee extends Model {
           }
         ],
         sequelize,
-        timestamps: true,
+        timestamps: false,
         tableName: 'Employees'
       }
     );
@@ -94,7 +94,26 @@ class Employee extends Model {
         user.password = hash;
       });
     });
+
+    return Employee;
+  }
+
+  public static associate(models: any) {
+    this.belongsTo(models.Positions, {
+      as: 'position',
+      foreignKey: 'positionId',
+      targetKey: 'positionId'
+    });
+    this.hasMany(models.EmployeeToPayment, {
+      as: 'tasks',
+      sourceKey: 'employeeId',
+      foreignKey: 'employeeId'
+    });
+    this.belongsToMany(models.Payment, {
+      as: 'payments',
+      through: models.EmployeeToPayment,
+      sourceKey: 'employeeId',
+      foreignKey: 'employeeId'
+    });
   }
 }
-
-export default Employee;

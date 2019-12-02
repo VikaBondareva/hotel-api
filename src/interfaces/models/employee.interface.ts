@@ -1,15 +1,17 @@
 import { Model } from 'sequelize';
 import { StatusUsers } from '../../enums';
 export interface IEmployee extends Model {
-  employeeId: string;
+  employeeId: number;
   name: string;
   surname: string;
-  email: string;
-  password: string;
   phoneNumber: string;
-  status: StatusUsers;
-  created_at: Date;
-  updated_at: Date;
+  email: string;
+  status: string;
+  password: string;
+  positionId: number;
+  permissions: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IEmployeeFieldsToRegister {
@@ -35,4 +37,11 @@ export interface IEmployeeResponse {
 export interface IEmployeeToLogin {
   email: string;
   password: string;
+}
+
+export interface IEmployeeToPayment extends Model {
+  paymentId: string;
+  employeeId: string;
+  status: string;
+  createdDate: string;
 }

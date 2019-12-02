@@ -1,6 +1,6 @@
 import { StatusUsers } from '../enums';
 
-export default [
+export const employees = [
   {
     name: 'Admin',
     surname: 'Admin',
@@ -8,7 +8,12 @@ export default [
     password: 'admin',
     phoneNumber: '+375297799188',
     status: StatusUsers.Active,
-    positionId: 1,
     permissions: 150
+  }
+];
+
+export const positions = [
+  {
+    positionName: 'administrator'
   }
 ];

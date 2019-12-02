@@ -1,4 +1,4 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 import { StatusUsersArray, Validate, CountAttempt } from '../enums';
 
 export class Client extends Model {
@@ -14,11 +14,11 @@ export class Client extends Model {
   public loginCode!: number | null;
   public newEmail: string | null;
   public newPhone: string | null;
-  public readonly createAt!: Date;
-  public readonly updatedAt!: Date;
+  public createAt!: string;
+  public updatedAt!: string;
 
-  public static initTable(sequelize: any, DataTypes: any) {
-    Client.init(
+  public static initTable(sequelize: any) {
+    return Client.init(
       {
         clientId: {
           type: DataTypes.INTEGER,
@@ -61,7 +61,7 @@ export class Client extends Model {
           }
         },
         newPhone: {
-          type: DataTypes.STRING(50),
+          type: DataTypes.STRING(20),
           allowNull: true
         },
         gender: {
@@ -72,28 +72,10 @@ export class Client extends Model {
           }
         },
         status: {
-          type: DataTypes.STRING(20),
+          type: DataTypes.STRING(15),
           allowNull: false,
           validate: {
             isIn: [StatusUsersArray]
-          }
-        },
-        attemptLogin: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0,
-          validate: {
-            max: CountAttempt.loginClient,
-            min: 0
-          }
-        },
-        loginCode: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: null,
-          validate: {
-            max: 999999,
-            min: 100000
           }
         }
       },
@@ -105,11 +87,18 @@ export class Client extends Model {
           }
         ],
         sequelize,
-        timestamps: true,
+        timestamps: false,
         tableName: 'Clients'
       }
     );
   }
-}
 
-export default Client;
+  public static associate(models: any) {
+    this.belongsTo(models.Countries, { as: 'country', foreignKey: 'phoneCountryId', targetKey: 'countryId' });
+    this.hasMany(models.Bookings, {
+      as: 'bookings',
+      sourceKey: 'clientId',
+      foreignKey: 'clientId'
+    });
+  }
+}

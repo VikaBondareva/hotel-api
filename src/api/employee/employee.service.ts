@@ -1,5 +1,7 @@
 import faker from 'faker';
 import { EmployeeRepository as Employee } from '../../repositories';
+import { Op } from 'sequelize';
+import { Employee as EmployeeModel, Positions, Payment } from '../../models';
 import {
   IEmployeeFieldsToRegister,
   Error,
@@ -11,30 +13,31 @@ import {
 } from '../../interfaces';
 import { logicErr, technicalErr } from '../../errors';
 import { Roles, StatusUsers } from '../../enums';
-import { Transport, JsonTokens } from '../../utils';
+import { JsonTokens } from '../../utils';
 import { config } from '../../config';
 class EmployeeService {
-  public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: number }> {
+  public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: number; password: string }> {
     try {
       const isExist = await Employee.findOne({
-        where: { $or: [{ email: data.email }, { phoneNumber: data.phoneNumber }] }
+        where: { [Op.or]: [{ email: data.email }, { phoneNumber: data.phoneNumber }] }
       });
       if (isExist) return new Error(logicErr.userIsAlreadyRegistered);
 
+      const password = faker.internet.password();
       const employee = {
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
-        password: faker.internet.password(),
+        ...data,
+        password,
         status: StatusUsers.NeedChangePassword
       };
 
       const newEmployee = await Employee.create(employee);
       return {
-        employeeId: newEmployee.employeeId
+        employeeId: newEmployee.employeeId,
+        password
       };
     } catch (error) {
+      console.log(error);
+
       return new Error(technicalErr.databaseCrash);
     }
   }
@@ -54,8 +57,9 @@ class EmployeeService {
       let dateNow: Date = new Date();
       dateNow.setSeconds(dateNow.getSeconds() + config.jwt.accessExpiration);
 
+      const { password, ...user } = employee;
       return {
-        user: employee,
+        user,
         tokens: {
           ...tokens,
           access_expires_in: dateNow.getTime()
@@ -66,28 +70,23 @@ class EmployeeService {
     }
   }
 
-  //   public async getCurrent(data: IEmployeeModel): Promise<Error | IUser> {
-  //     try {
-  //       if (!data) return new Error(logicErr.notFoundUser);
-  //       const dataObj = data.toObject();
-  //       return dataObj;
-  //     } catch (error) {
-  //       return new Error(technicalErr.databaseCrash);
-  //     }
-  //   }
+  public async getAll(): Promise<IEmployee[]> {
+    const employees = await EmployeeModel.findAll({
+      attributes: { exclude: ['positionId'] },
+      include: [{ model: Positions, as: 'position' }]
+    });
 
-  // public async changeFirstPassword(data: { newPassword: string }, employee: IEmployee): Promise<Error | boolean> {
-  //   try {
-  //     if (!employee) return new Error(logicErr.notFoundUser);
+    return employees;
+  }
 
-  //     employee.status = StatusUsers.Active;
-  //     employee.password = data.newPassword;
-  //     await employee.save();
+  public async getById(employeeId: string): Promise<IEmployee[]> {
+    const employees = await EmployeeModel.findAll({
+      where: { employeeId },
+      attributes: { exclude: ['positionId'] },
+      include: [{ model: Positions, as: 'position' }]
+    });
 
-  //     return true;
-  //   } catch {
-  //     return new Error(technicalErr.databaseCrash);
-  //   }
-  // }
+    return employees;
+  }
 }
 export default new EmployeeService();

@@ -1,21 +1,20 @@
-import { Model } from 'sequelize';
+import DataTypes, { Model } from 'sequelize';
 
 export class Countries extends Model {
   public countryId!: number;
   public name!: string;
   public phoneCode!: number;
 
-  public static initTable(sequelize: any, DataTypes: any) {
-    Countries.init(
+  public static initTable(sequelize: any) {
+    return Countries.init(
       {
         countryId: {
           type: DataTypes.INTEGER,
-          autoIncrement: true,
           primaryKey: true,
           allowNull: false
         },
         name: {
-          type: DataTypes.STRING(20),
+          type: DataTypes.STRING(30),
           allowNull: false
         },
         phoneCode: {
@@ -31,10 +30,9 @@ export class Countries extends Model {
           }
         ],
         sequelize,
+        timestamps: false,
         tableName: 'Countries'
       }
     );
   }
 }
-
-export default Countries;

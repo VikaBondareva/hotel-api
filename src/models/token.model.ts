@@ -1,14 +1,14 @@
-import { Model, Sequelize } from 'sequelize';
+import DataTypes, { Model, Sequelize } from 'sequelize';
 
-class RefreshTokens extends Model {
+export class Token extends Model {
   public tokenId!: string;
   public userId!: number;
   public role!: string;
   public isValid!: boolean;
   public createdAt!: Date;
 
-  public static initTable(sequelize: Sequelize, DataTypes: any) {
-    return RefreshTokens.init(
+  public static initTable(sequelize: Sequelize) {
+    return Token.init(
       {
         tokenId: {
           type: DataTypes.STRING,
@@ -42,5 +42,3 @@ class RefreshTokens extends Model {
     );
   }
 }
-
-export default RefreshTokens;
