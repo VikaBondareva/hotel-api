@@ -1,5 +1,5 @@
 import { IBooking, IBookingCreate } from '../../../interfaces';
-import { Bookings } from '../../../models';
+import { Bookings, Payment } from '../../../models';
 import { StatusBookings } from '../../../enums';
 import { sequelize } from '../../../config/databaseConnect';
 import Sequelize from 'sequelize';
@@ -10,7 +10,7 @@ class BookingServiceClient {
   }
 
   public async getAll(clientId: string): Promise<IBooking[]> {
-    return Bookings.findAll({ where: { clientId } });
+    return Bookings.findAll({ where: { clientId }, include: [{ model: Payment, as: 'payments' }] });
   }
 
   public async getById(bookingId: string, clientId: string): Promise<IBooking> {

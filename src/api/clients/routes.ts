@@ -14,6 +14,6 @@ router.get('/:id', controller.getById);
 router.patch('/:id', controller.updateStatus);
 router.delete('/:id', controller.remove);
 
-router.use('/:id/booking', bookingRouter);
+router.use('/:id/bookings', bookingRouter);
 
 export const clientRouter = router;
