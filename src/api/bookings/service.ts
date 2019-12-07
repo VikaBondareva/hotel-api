@@ -1,5 +1,5 @@
 import { IBooking, IBookingCreate } from '../../interfaces';
-import { Bookings, Client, Payment } from '../../models';
+import { Bookings, Client, Payment, Services, Rooms } from '../../models';
 
 const selects = {
   include: [{ model: Client, as: 'client' }]
@@ -8,7 +8,8 @@ const selects = {
 const selectsPayments = {
   include: [
     { model: Client, as: 'client' },
-    { model: Payment, as: 'payments' }
+    { model: Rooms, as: 'room', attributes: ['price'] },
+    { model: Payment, as: 'payments', include: [{ model: Services, as: 'service' }] }
   ]
 };
 
