@@ -1,9 +1,11 @@
-import { Request, Response } from 'express';
+import { Request, Response, text } from 'express';
 import EmployeeService from './employee.service';
+import authService, { logout } from '../../services/auth';
 import { Transport, JsonTokens } from '../../utils';
 import { Error, EmailService } from '../../interfaces';
 import { Roles } from '../../enums';
 import { logicErr } from '../../errors';
+import { Employee } from '../../models';
 
 class EmployeeController {
   private static _transporter: Transport = new Transport(new EmailService());
@@ -11,7 +13,7 @@ class EmployeeController {
   public create(req: Request, res: Response): void {
     const origin = req.headers.origin;
 
-    EmployeeService.register(req.body).then(result => {
+    EmployeeService.register(req.body).then((result) => {
       if (!(result instanceof Error)) {
         const token: string = JsonTokens.generateIdentifiedToken(result.employeeId, Roles.Employee);
         EmployeeController._transporter.sendLinkToChangePassword(origin, req.body.email, token, req.body.name);
@@ -20,12 +22,50 @@ class EmployeeController {
     });
   }
 
-  public login(req: Request, res: Response): void {
-    EmployeeService.login(req.body).then(result =>
-      !(result instanceof Error)
-        ? res.status(200).json(result)
-        : res.status(result.status).json({ message: result.message, success: false })
-    );
+  public async loginEmployee(req: Request, res: Response): Promise<void> {
+    try {
+      const { token } = await authService({ model: Employee }).login(req.body);
+      res.status(200).send({ token });
+    } catch (error) {
+      res.status(400).send(error.message);
+    }
+  }
+
+  public async activateEmployee(req: Request, res: Response, next: any): Promise<void> {
+    try {
+      const { resetPasswordToken } = req.query;
+      const { password, repeatedPassword } = req.body;
+      if (password !== repeatedPassword) throw 'Wrong Password';
+      await authService({ model: Employee }).activateAccount({
+        resetPasswordToken,
+        password
+      });
+      res.sendStatus(200);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async logoutEmployee(req: any, res: any, next: any): Promise<void> {
+    try {
+      await logout(req.query.accessToken);
+      res.sendStatus(200);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  public async requestResetPassword(req: any, res: any, next: any): Promise<void> {
+    try {
+      const { email } = req.body;
+      const token = await authService({ model: Employee }).requestResetPassword({
+        email
+      });
+      // TODO: send email to change password
+      res.sendStatus(200);
+    } catch (err) {
+      next(err);
+    }
   }
 
   public getCurrent(req: any, res: Response): void {

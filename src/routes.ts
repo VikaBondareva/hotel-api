@@ -22,7 +22,6 @@ router.get('/health', (req: Request, res: Response) => {
 
 // router.use('/clients', clientRouter);
 router.use('/employees', employeeRouter);
-// router.use('/auth', authRouter);
 router.use('/rooms', roomRouter);
 router.use('/additions', additionRouter);
 router.use('/services', serviceRouter);
