@@ -34,7 +34,6 @@ export const sequelize = new Sequelize(database.name, database.login, database.p
 export async function initializeDb(callback: (sequelize: Sequelize) => void): Promise<void> {
   try {
     await sequelize.authenticate();
-    logger.info(`Postgre: Connection has been established successfully`);
 
     const models = {
       Additions: Additions.initTable(sequelize),
@@ -60,6 +59,8 @@ export async function initializeDb(callback: (sequelize: Sequelize) => void): Pr
     });
 
     await sequelize.sync();
+    logger.info(`Postgre: Connection has been established successfully`);
+
     return callback(sequelize);
   } catch (err) {
     logger.error('Sequelize: Unable to connect to the database: ' + err.toString());

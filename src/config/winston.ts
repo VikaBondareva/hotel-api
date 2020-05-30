@@ -1,34 +1,25 @@
-import appRoot from 'app-root-path';
-import { format, transports, createLogger } from 'winston';
-import { config } from './environment';
+import log4js from 'log4js';
 
-var options = {
-  file: {
-    level: 'warn',
-    filename: `${appRoot}/logs/app.log`,
-    handleExceptions: true,
-    json: true,
-    maxsize: 5242880, // 5MB
-    maxFiles: 5,
-    colorize: false
+log4js.configure({
+  appenders: {
+    file: {
+      type: 'file',
+      filename: 'logs/api.log',
+      maxLogSize: 10 * 1024 * 1024,
+      backups: 25,
+      compress: true,
+      encoding: 'utf-8',
+      mode: 0o0640
+    },
+    out: {
+      type: 'stdout'
+    }
   },
-  console: {
-    level: 'debug',
-    handleExceptions: true,
-    json: false,
-    colorize: true
+  categories: {
+    default: { appenders: ['file', 'out'], level: 'trace' }
   }
-};
-
-var logger = createLogger({
-  level: config.app.environment === 'development' ? 'debug' : 'warn',
-  format: format.combine(
-    format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
-    }),
-    format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
-  ),
-  transports: [new transports.File(options.file), new transports.Console(options.console)],
-  exitOnError: false // do not exit on handled exceptions
 });
+
+const logger = log4js.getLogger('api');
+
 export default logger;

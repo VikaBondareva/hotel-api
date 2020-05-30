@@ -1,26 +1,21 @@
 import express, { Response, Request, NextFunction } from 'express';
 import morgan from 'morgan';
 import router from './routes';
-import { initializeDb, Passport, initialize, logger, config } from './config';
+import { initializeDb, Passport, initialize, logger as winston, config } from './config';
 
 class App {
   public app: express.Application;
 
   public constructor() {
     this.app = express();
-    if (config.app.environment !== 'test') {
-      this.app.use(
-        morgan('tiny', {
-          stream: {
-            write: function(message: string, encoding?: string): void {
-              logger.info(message, encoding);
-            }
-          }
-        })
-      );
-    }
+    this.app.use(morgan('combined'));
 
-    this.app.use(morgan('dev'));
+    this.app.use(function (err: any, req: any, res: any, next: any) {
+      winston.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+      if (!err.statusCode) err.statusCode = 500;
+      res.status(err.statusCode).json({ message: err.message });
+    });
+
     this.configCors();
     this.config();
   }
@@ -31,13 +26,13 @@ class App {
     this.app.use(initialize());
     Passport.jwtStrategy();
     this.app.use('/api/', router);
-    this.app.get('*', function(req: Request, res: Response, next: NextFunction) {
+    this.app.get('*', function (req: Request, res: Response, next: NextFunction) {
       const err: any = new Error('Page Not Found');
       err.statusCode = 404;
       next(err);
     });
 
-    this.app.use(function(err: any, req: Request, res: Response, next: NextFunction) {
+    this.app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
       if (!err.statusCode) err.statusCode = 500;
       res.status(err.statusCode).json({ message: err.message });
     });
