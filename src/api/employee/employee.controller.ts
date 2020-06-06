@@ -78,8 +78,8 @@ class EmployeeController {
     }
   }
 
-  public async getAll(req: Request, res: Response): Promise<void> {
-    const result = await EmployeeService.getAll();
+  public async getAll(req: any, res: Response): Promise<void> {
+    const result = await EmployeeService.getAll(req.user.employeeId);
 
     res.status(200).json(result);
   }

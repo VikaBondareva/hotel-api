@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { version } from '../package.json';
+import passport from 'passport';
 import {
   employeeRouter,
   roomRouter,

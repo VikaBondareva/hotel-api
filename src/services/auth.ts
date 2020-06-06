@@ -4,13 +4,14 @@ import { config } from '../config/environment';
 
 let Model: any = null;
 
-export function generateToken(payload: any) {
+export function generateToken(payload: any, id: string) {
   return jwt.sign(
     {
-      ...payload
+      ...payload,
+      sub: id,
+      expiresIn: config.jwt.accessExpiration
     },
-    config.jwt.secret,
-    { expiresIn: config.jwt.accessExpiration }
+    config.jwt.secret
   );
 }
 
@@ -28,7 +29,7 @@ async function login({ email, password }: { email: string; password: string }): 
   });
   if (!user) throw new Error('Wrong Email or Password');
 
-  const token = await generateToken({ user });
+  const token = await generateToken({ user }, user.employeeId);
   // await AccessToken.create({ token });
 
   return { token };
@@ -55,7 +56,7 @@ async function requestResetPassword({ email }: any) {
   });
 
   if (!user) throw new Error('Wrong Email');
-  const token = generateToken({ user });
+  const token = generateToken({ user }, user.employeeId);
   await user.update({ resetPasswordToken: token });
   return token;
 }

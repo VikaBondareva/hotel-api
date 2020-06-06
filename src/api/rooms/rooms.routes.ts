@@ -3,17 +3,18 @@ import controller from './rooms.controller';
 import { validation } from '../../middleware';
 import { roomCreate } from '../../validation';
 import { scheduleRouter } from './additions';
+import passport from 'passport';
 
 const router = Router();
 
 // router.post('/', permit([Roles.Employee]), validation(roomCreate), controller.create);
-router.post('/', validation(roomCreate), controller.create);
+router.post('/', passport.authenticate('jwt', { session: false }), validation(roomCreate), controller.create);
 router.get('/', controller.get);
 router.get('/:id', controller.getById);
 // router.put('/:id', permit([Roles.Employee]), validation(roomCreate), controller.update);
-router.put('/:id', validation(roomCreate), controller.update);
-router.delete('/:id', controller.remove);
+router.put('/:id', passport.authenticate('jwt', { session: false }), validation(roomCreate), controller.update);
+router.delete('/:id', passport.authenticate('jwt', { session: false }), controller.remove);
 
-router.use('/:id/additions', scheduleRouter);
+router.use('/:id/additions', passport.authenticate('jwt', { session: false }), scheduleRouter);
 
 export const roomRouter = router;

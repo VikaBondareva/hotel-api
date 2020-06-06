@@ -5,20 +5,26 @@ import { validateRegisterEmployee } from '../../validation';
 import loginData from '../../validation/loginData.validation';
 import { tasksRouter } from './tasks';
 import { scheduleRoutes } from './schedules';
+import passport from 'passport';
 
 const router = Router();
 
-router.post('/', validation(validateRegisterEmployee), employeeController.create);
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  validation(validateRegisterEmployee),
+  employeeController.create
+);
 router.post('/login', validation(loginData), employeeController.loginEmployee);
 router.post('/logout', employeeController.logoutEmployee);
 router.post('/confirm', employeeController.activateEmployee);
 router.post('/forgot-password', employeeController.requestResetPassword);
 // router.get('/current', permit([Roles.Employee]), employeeController.getCurrent);
-router.get('/current', employeeController.getCurrent);
-router.get('/', employeeController.getAll);
-router.get('/:id', employeeController.getById);
+router.get('/current', passport.authenticate('jwt', { session: false }), employeeController.getCurrent);
+router.get('/', passport.authenticate('jwt', { session: false }), employeeController.getAll);
+router.get('/:id', passport.authenticate('jwt', { session: false }), employeeController.getById);
 
-router.use('/:id/tasks', tasksRouter);
-router.use('/:id/schedules', scheduleRoutes);
+router.use('/:id/tasks', passport.authenticate('jwt', { session: false }), tasksRouter);
+router.use('/:id/schedules', passport.authenticate('jwt', { session: false }), scheduleRoutes);
 
 export const employeeRouter = router;

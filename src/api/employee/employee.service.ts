@@ -70,10 +70,15 @@ class EmployeeService {
     }
   }
 
-  public async getAll(): Promise<IEmployee[]> {
+  public async getAll(employeeId: string): Promise<IEmployee[]> {
     const employees = await EmployeeModel.findAll({
       attributes: { exclude: ['positionId'] },
-      include: [{ model: Positions, as: 'position' }]
+      include: [{ model: Positions, as: 'position' }],
+      where: {
+        employeeId: {
+          [Op.ne]: employeeId
+        }
+      }
     });
 
     return employees;

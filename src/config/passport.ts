@@ -1,8 +1,7 @@
 import passport from 'passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { Roles } from '../enums';
 import { config } from './environment';
-import { TokenRepository, EmployeeRepository, ClientRepository } from '../repositories';
+import { TokenRepository, EmployeeRepository } from '../repositories';
 import { IClient, IEmployee, ISaveTokens } from '../interfaces';
 
 export class Passport {
@@ -24,7 +23,7 @@ export class Passport {
             return done(null);
           }
           this.Token.deleteAccessRefresh(token.id);
-          return Passport.getUser(token.role, token.sub).then(user => {
+          return Passport.getUser(token.role, token.sub).then((user) => {
             if (user) {
               return done(null, user, token.role);
             } else {
@@ -51,32 +50,21 @@ export class Passport {
     );
 
     passport.use(
-      new Strategy(
-        option,
-        async (token: any, done: (error: any, user?: IEmployee | IClient, info?: string) => void) => {
-          // const isValid = await this.Token.findRefreshToken(token.sub, token.id);
-          // if (!isValid) {
-          //   return done(null);
-          // }
-          return Passport.getUser(token.role, token.sub).then(user => {
-            if (user) {
-              return done(null, user, token.role);
-            } else {
-              return done(null);
-            }
-          });
+      'jwt',
+      new Strategy(option, async (token: any, done: any) => {
+        const employee = await EmployeeRepository.findById(token.user.employeeId);
+        if (employee) {
+          return done(null, employee, token.role);
+        } else {
+          return done(null, false);
         }
-      )
+      })
     );
   }
 
-  private static async getUser(role: string, userId: string): Promise<IClient | IEmployee | null> {
-    let user: IClient | IEmployee | null;
-    if (role === Roles.Client) {
-      user = await ClientRepository.findById(userId);
-    } else {
-      user = await EmployeeRepository.findById(userId);
-    }
+  private static async getUser(role: string, userId: string): Promise<IEmployee | null> {
+    let user: IEmployee | null;
+    user = await EmployeeRepository.findById(userId);
     return user;
   }
 }
