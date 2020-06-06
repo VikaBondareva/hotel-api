@@ -14,11 +14,11 @@ export function generateToken(payload: any) {
   );
 }
 
-export async function checkToken(token: any) {
+export async function checkToken(token: string) {
   return !!(await AccessToken.count({ where: { token: token } }));
 }
 
-async function login({ email, password }: any) {
+async function login({ email, password }: { email: string; password: string }): Promise<{ token: string }> {
   const user = await Model.findOne({
     where: {
       email,
@@ -26,11 +26,10 @@ async function login({ email, password }: any) {
     },
     raw: true
   });
-
   if (!user) throw new Error('Wrong Email or Password');
 
-  const token = generateToken({ user });
-  await AccessToken.create({ token });
+  const token = await generateToken({ user });
+  // await AccessToken.create({ token });
 
   return { token };
 }

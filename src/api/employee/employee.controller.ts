@@ -24,7 +24,9 @@ class EmployeeController {
 
   public async loginEmployee(req: Request, res: Response): Promise<void> {
     try {
-      const { token } = await authService({ model: Employee }).login(req.body);
+      const { email, password } = req.body;
+      const authServicePrimary = authService({ model: Employee });
+      const { token } = await authServicePrimary.login({ email, password });
       res.status(200).send({ token });
     } catch (error) {
       res.status(400).send(error.message);
@@ -61,7 +63,6 @@ class EmployeeController {
       const token = await authService({ model: Employee }).requestResetPassword({
         email
       });
-      // TODO: send email to change password
       res.sendStatus(200);
     } catch (err) {
       next(err);

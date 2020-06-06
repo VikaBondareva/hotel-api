@@ -11,6 +11,8 @@ export class Employee extends Model {
   public status!: string;
   public password!: string;
   public positionId!: number;
+  public isAdmin!: boolean;
+  public role!: string;
   public permissions!: number;
   public createdAt!: string;
   public updatedAt!: string;
@@ -53,6 +55,12 @@ export class Employee extends Model {
           type: DataTypes.INTEGER,
           allowNull: false
         },
+        isAdmin: {
+          type: DataTypes.BOOLEAN
+        },
+        role: {
+          type: DataTypes.STRING(30)
+        },
         permissions: {
           type: DataTypes.INTEGER,
           allowNull: false,
@@ -83,14 +91,14 @@ export class Employee extends Model {
       }
     );
 
-    Employee.beforeSave(user => {
-      return bcrypt.hash(user.password, 10).then(hash => {
+    Employee.beforeSave((user) => {
+      return bcrypt.hash(user.password, 10).then((hash) => {
         user.password = hash;
       });
     });
 
-    Employee.beforeUpdate(user => {
-      return bcrypt.hash(user.password, 10).then(hash => {
+    Employee.beforeUpdate((user) => {
+      return bcrypt.hash(user.password, 10).then((hash) => {
         user.password = hash;
       });
     });
