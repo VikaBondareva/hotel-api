@@ -18,6 +18,7 @@ import {
   Payment,
   Discount,
   Schedule,
+  Vacations,
   AccessToken
 } from '../models';
 const { database } = config;
@@ -53,7 +54,8 @@ export async function initializeDb(callback: (sequelize: Sequelize) => void): Pr
       Services: Services.initTable(sequelize),
       Schedule: Schedule.initTable(sequelize),
       Token: Token.initTable(sequelize),
-      AccessToken: AccessToken.initTable(sequelize)
+      AccessToken: AccessToken.initTable(sequelize),
+      Vacations: Vacations.initTable(sequelize)
     };
 
     Object.values(models).forEach((model: any): void => {

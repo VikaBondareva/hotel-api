@@ -4,6 +4,7 @@ import { validation } from '../../middleware';
 import { validateRegisterEmployee } from '../../validation';
 import loginData from '../../validation/loginData.validation';
 import { tasksRouter } from './tasks';
+import { vacationRoutes } from './vacations';
 import { scheduleRoutes } from './schedules';
 import passport from 'passport';
 
@@ -26,5 +27,6 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), employeeCon
 
 router.use('/:id/tasks', passport.authenticate('jwt', { session: false }), tasksRouter);
 router.use('/:id/schedules', passport.authenticate('jwt', { session: false }), scheduleRoutes);
+router.use('/current/vacations', vacationRoutes);
 
 export const employeeRouter = router;

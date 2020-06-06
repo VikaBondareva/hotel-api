@@ -112,8 +112,15 @@ export class Employee extends Model {
       foreignKey: 'positionId',
       targetKey: 'positionId'
     });
+
     this.hasMany(models.EmployeeToPayment, {
       as: 'tasks',
+      sourceKey: 'employeeId',
+      foreignKey: 'employeeId'
+    });
+
+    this.hasMany(models.Vacations, {
+      as: 'vacations',
       sourceKey: 'employeeId',
       foreignKey: 'employeeId'
     });

@@ -16,3 +16,4 @@ export * from './payment.model';
 export * from './discount.model';
 export * from './employeeToPayment.model';
 export * from './schedule.model';
+export * from './vacation.model';
