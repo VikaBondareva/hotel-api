@@ -15,6 +15,6 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), controller.
 router.patch('/:id', passport.authenticate('jwt', { session: false }), controller.updateStatus);
 router.delete('/:id', passport.authenticate('jwt', { session: false }), controller.remove);
 
-router.use('/:id/bookings', passport.authenticate('jwt', { session: false }), bookingRouter);
+router.use('/:id/bookings', bookingRouter);
 
 export const clientRouter = router;

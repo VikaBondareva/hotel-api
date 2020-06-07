@@ -15,10 +15,8 @@ class BookingControllerClient {
 
   public async get(req: Request, res: Response): Promise<void> {
     const clientId = req.params.id;
-    const isPrice = req.query.price;
-    let result;
-    if (isPrice) result = await service.getAllPrice(clientId);
-    else result = await service.getAll(clientId);
+    // if (isPrice) result = await service.getAllPrice(clientId);
+    const result = await service.getAll(clientId);
 
     res.status(200).json(result);
   }

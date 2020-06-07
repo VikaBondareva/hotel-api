@@ -1,5 +1,5 @@
 import { IClient } from '../../interfaces';
-import { Client } from '../../models';
+import { Client, Bookings } from '../../models';
 
 class ClientService {
   public async create(data: any): Promise<IClient> {
@@ -7,7 +7,14 @@ class ClientService {
   }
 
   public async getAll(): Promise<IClient[]> {
-    return Client.findAll();
+    return Client.findAll({
+      include: [
+        {
+          model: Bookings,
+          as: 'bookings'
+        }
+      ]
+    });
   }
 
   public async getById(id: string): Promise<IClient> {
