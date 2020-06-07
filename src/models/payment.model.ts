@@ -82,11 +82,5 @@ export class Payment extends Model {
       foreignKey: 'serviceId',
       targetKey: 'serviceId'
     });
-
-    this.belongsToMany(models.Employee, {
-      through: models.EmployeeToPayment,
-      sourceKey: 'paymentId',
-      foreignKey: 'paymentId'
-    });
   }
 }

@@ -113,7 +113,7 @@ export class Employee extends Model {
       targetKey: 'positionId'
     });
 
-    this.hasMany(models.EmployeeToPayment, {
+    this.hasMany(models.Tasks, {
       as: 'tasks',
       sourceKey: 'employeeId',
       foreignKey: 'employeeId'
@@ -121,12 +121,6 @@ export class Employee extends Model {
 
     this.hasMany(models.Vacations, {
       as: 'vacations',
-      sourceKey: 'employeeId',
-      foreignKey: 'employeeId'
-    });
-    this.belongsToMany(models.Payment, {
-      as: 'payments',
-      through: models.EmployeeToPayment,
       sourceKey: 'employeeId',
       foreignKey: 'employeeId'
     });

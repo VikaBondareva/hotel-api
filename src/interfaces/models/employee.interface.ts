@@ -40,8 +40,15 @@ export interface IEmployeeToLogin {
 }
 
 export interface IEmployeeToPayment extends Model {
-  paymentId: string;
-  employeeId: string;
+  taskId: number;
+  employeeId: number;
+  paymentId: number;
+  startDate: Date;
+  endDate: Date;
   status: string;
-  createdDate: string;
+  location: string;
+  name: string;
+  title: string;
+  description: string;
+  closedDate: Date;
 }

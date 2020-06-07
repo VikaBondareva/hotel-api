@@ -14,6 +14,6 @@ export * from './service.model';
 export * from './service.model';
 export * from './payment.model';
 export * from './discount.model';
-export * from './employeeToPayment.model';
 export * from './schedule.model';
 export * from './vacation.model';
+export * from './task.model';

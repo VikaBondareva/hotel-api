@@ -15,10 +15,7 @@ const selectsPayments = {
 
 class BookingService {
   public async getAll(isPayments: boolean): Promise<IBooking[]> {
-    let query;
-    if (isPayments) query = selectsPayments;
-    else query = selects;
-    return Bookings.findAll(query);
+    return Bookings.findAll(selectsPayments);
   }
 
   public async getById(id: string, isPayments: boolean): Promise<IBooking> {
