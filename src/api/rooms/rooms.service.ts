@@ -4,7 +4,8 @@ import { StatusService } from '../../enums';
 
 class RoomService {
   public async create(data: IRoomCreate): Promise<IRoom> {
-    return Rooms.create({ ...data, status: StatusService.Available });
+    const totalBeds = data.countDoubleBeds + data.countSingleBeds;
+    return Rooms.create({ ...data, totalBeds, status: StatusService.Available });
   }
 
   public async getAll(): Promise<IRoom[]> {

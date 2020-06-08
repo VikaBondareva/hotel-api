@@ -17,7 +17,7 @@ class EmployeeController {
       if (!(result instanceof Error)) {
         const token: string = JsonTokens.generateIdentifiedToken(result.employeeId, Roles.Employee);
         EmployeeController._transporter.sendLinkToChangePassword(origin, req.body.email, token, req.body.name);
-        res.status(201).json({ success: true });
+        res.status(201).json(result);
       } else res.status(result.status).json({ message: result.message, success: false });
     });
   }

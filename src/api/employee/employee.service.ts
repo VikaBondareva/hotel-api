@@ -16,7 +16,7 @@ import { Roles, StatusUsers } from '../../enums';
 import { JsonTokens } from '../../utils';
 import { config } from '../../config';
 class EmployeeService {
-  public async register(data: IEmployeeFieldsToRegister): Promise<Error | { employeeId: number; password: string }> {
+  public async register(data: IEmployeeFieldsToRegister): Promise<Error | any> {
     try {
       const isExist = await Employee.findOne({
         where: { [Op.or]: [{ email: data.email }, { phoneNumber: data.phoneNumber }] }
@@ -27,14 +27,13 @@ class EmployeeService {
       const employee = {
         ...data,
         password,
+        permissions: 175,
+        positionId: 1,
         status: StatusUsers.NeedChangePassword
       };
 
       const newEmployee = await Employee.create(employee);
-      return {
-        employeeId: newEmployee.employeeId,
-        password
-      };
+      return newEmployee;
     } catch (error) {
       console.log(error);
 

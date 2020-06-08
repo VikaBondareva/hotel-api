@@ -23,6 +23,8 @@ export class Employee extends Model {
         employeeId: {
           type: DataTypes.INTEGER,
           primaryKey: true,
+          autoIncrement: true,
+          autoIncrementIdentity: true,
           allowNull: false
         },
         name: {
@@ -46,10 +48,7 @@ export class Employee extends Model {
         },
         phoneNumber: {
           type: DataTypes.STRING(20),
-          allowNull: false,
-          validate: {
-            is: Validate.phoneNumber
-          }
+          allowNull: false
         },
         positionId: {
           type: DataTypes.INTEGER,
